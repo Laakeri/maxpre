@@ -123,4 +123,8 @@ it could use only 30 seconds not get as much preprocessing done. It is not recom
 to try to optimize the time used by the preprocessor by using the timelimit flag, but
 rather to use it for an upper bound for the time used by the preprocessor.
 
+API
 
+Maxpre offers an API for integration with MaxSAT solvers. Use make lib to make
+the static library file and include preprocessorinterface.hpp to use it. The API
+is documented in preprocessorinterface.hpp.

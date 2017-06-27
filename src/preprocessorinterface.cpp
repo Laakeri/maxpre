@@ -169,7 +169,7 @@ namespace maxPreprocessor {
 				int nvar = addVar(abs(lit));
 				assert(nvar == abs(lit));
 				tlit = litToPP(lit);
-				assert(tlit == lit);
+				assert(lit == litToSolver(tlit));
 			}
 			tlit = litFromDimacs(tlit);
 			lit = tlit;
@@ -180,6 +180,34 @@ namespace maxPreprocessor {
 			if (clause[i] == litNegation(clause[i-1])) return true;
 		}
 		preprocessor.pi.addClause(clause);
+		return true;
+	}
+	
+	bool PreprocessorInterface::labelToVar(int lbl) {
+		if (!inProcessMode) return false;
+		if (lbl < 1) return false;
+		int iVar = solverVarToPPVar[lbl-1]-1;
+		assert(iVar >= 0);
+		int softClause = -1;
+		if (preprocessor.pi.isLabel[iVar] == VAR_TRUE) {
+			assert(preprocessor.pi.litClauses[posLit(iVar)].size() >= 1);
+			softClause = preprocessor.pi.litClauses[posLit(iVar)][0];
+		}
+		else if (preprocessor.pi.isLabel[iVar] == VAR_FALSE) {
+			assert(preprocessor.pi.litClauses[negLit(iVar)].size() >= 1);
+			softClause = preprocessor.pi.litClauses[negLit(iVar)][0];
+		}
+		else {
+			return true;
+		}
+		preprocessor.pi.isLabel[iVar] = 0;
+		preprocessor.pi.removeClause(softClause);
+		return true;
+	}
+	
+	bool PreprocessorInterface::resetRemovedWeight() {
+		if (!inProcessMode) return false;
+		preprocessor.trace.removedWeight = 0;
 		return true;
 	}
 	

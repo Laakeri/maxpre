@@ -64,12 +64,26 @@ public:
 	 * a normal variable. Normal variables can never be changed into labels.
 	 */
 	bool alterWeight(int lbl, uint64_t weight);
+	/* Changes a label into a variable and deletes the soft clause. lbl is the
+	 * index of the label variable i.e. its always positive.
+	 */
+	bool labelToVar(int lbl);
+	// resets removed weight
+	bool resetRemovedWeight();
 	
+	
+	// Functions for enabling/disabling some functionality
 	void setBVEGateExtraction(bool use);
 	void setLabelMatching(bool use);
+	// Set value=0 to disable skiptechnique
 	void setSkipTechnique(int value);
 	
+	
+	// Returns the current instance
 	void getInstance(std::vector<std::vector<int> >& retClauses, std::vector<uint64_t>& retWeights, std::vector<int>& retLabels);
+	/* Returns the assignment of the original variables given the assignment of 
+	 * variable in the solution of the preprocessed istance
+	 */
 	std::vector<int> reconstruct(const std::vector<int>& trueLiterals);
 	std::vector<std::pair<int, std::pair<int, int> > > getCondEdges();
 	
