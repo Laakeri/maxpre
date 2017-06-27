@@ -1,7 +1,7 @@
-#MaxPre MaxSAT preprocessor
+# MaxPre MaxSAT preprocessor
 
 
-##Basic use and flags
+## Basic use and flags
 
 The first argument is the instance file, the second is preprocess, reconstruct or solve.
 
@@ -79,9 +79,9 @@ Another way to do the same thing:
 	If verb is 0 the preprocessor will output less stuff to the standard error
 
 
-##More detailed information
+## More detailed information
 
-##Actual order of simplifyings
+## Actual order of simplifyings
 
 * remove tautologies
 * remove empty clauses
@@ -96,7 +96,7 @@ Another way to do the same thing:
 * remove empty clauses
 * remove duplicate clauses
 
-##The techniques string
+## The techniques string
 
 Each technique is applied somewhat modularly indenpendent of each other. The user
 can specify the exact order of used preprocessing techniques with the techniques string.
@@ -106,7 +106,7 @@ The techniques inside brackets are applied
 until none of them change the instance when applying all of them in the given order.
 The brackets work recursively, for example [[[[vu]b]sr]ea] is valid syntax.
 
-##Timelimit
+## Timelimit
 
 You can set internal time limit for the preprocessor running time with the timelimit flag.
 The preprocessor will try to preprocess the instance in less than the given time,
@@ -123,7 +123,7 @@ it could use only 30 seconds not get as much preprocessing done. It is not recom
 to try to optimize the time used by the preprocessor by using the timelimit flag, but
 rather to use it for an upper bound for the time used by the preprocessor.
 
-##API
+## API
 
 Maxpre offers an API for integration with MaxSAT solvers. Use make lib to make
 the static library file and include preprocessorinterface.hpp to use it. The API
