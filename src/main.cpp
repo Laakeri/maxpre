@@ -174,6 +174,76 @@ int parseSkipTechnique(map<string, string>& flags) {
 	return skipTechnique;
 }
 
+bool parseBVEsortMaxFirst(map<string, string>& flags) {
+  bool BVEsortMaxFirst = false;
+  if (flags.count("bvesortmaxfirst")) {
+    if (flags["bvesortmaxfirst"] == "1") {
+      BVEsortMaxFirst = true;
+      cout<<"c BVEsortMaxFirst enabled"<<endl;
+      cerr<<"BVEsortMaxFirst enabled"<<endl;
+    }
+    else if (flags["bvesortmaxfirst"] == "0") {
+      BVEsortMaxFirst = false;
+      cout<<"c BVEsortMaxFirst disabled"<<endl;
+      cerr<<"BVEsortMaxFirst disabled"<<endl;
+    }
+    else {
+      cout<<"Invalid bvesortmaxfirst flag"<<endl;
+      cerr<<"Invalid bvesortmaxfirst flag"<<endl;
+      exit(0);
+    }
+  }
+  else {
+    cout<<"c No -bvesortmaxfirst given, defaulting to disabled"<<endl;
+    cerr<<"No -bvesortmaxfirst given, defaulting to disabled"<<endl;
+  }
+  return BVEsortMaxFirst;
+}
+
+int parseBVElocalGrow(map<string, string>& flags) {
+  int BVElocalGrow = 0;
+  if (flags.count("bvelocalgrow")) {
+    stringstream ss;
+    ss<<flags["bvelocalgrow"];
+    ss>>BVElocalGrow;
+    cout<<"c BVElocalgrow "<<BVElocalGrow<<endl;
+    cerr<<"BVElocalgrow "<<BVElocalGrow<<endl;
+    
+    if (BVElocalGrow <= 0 || BVElocalGrow > 1000000000) {
+      cout<<"Invalid bvelocalgrow flag"<<endl;
+      cerr<<"Invalid bvelocalgrow flag"<<endl;
+      exit(0);
+    }
+  }
+  else {
+    cout<<"c No -bvelocalgrow given, defaulting to disabled"<<endl;
+    cerr<<"No -bvelocalgrow given, defaulting to disabled"<<endl;
+  }
+  return BVElocalGrow;
+}
+
+int parseBVEglobalGrow(map<string, string>& flags) {
+  int BVEglobalGrow = 0;
+  if (flags.count("bveglobalgrow")) {
+    stringstream ss;
+    ss<<flags["bveglobalgrow"];
+    ss>>BVEglobalGrow;
+    cout<<"c BVEglobalgrow "<<BVEglobalGrow<<endl;
+    cerr<<"BVEglobalgrow "<<BVEglobalGrow<<endl;
+    
+    if (BVEglobalGrow <= 0 || BVEglobalGrow > 1000000000) {
+      cout<<"Invalid bveglobalgrow flag"<<endl;
+      cerr<<"Invalid bveglobalgrow flag"<<endl;
+      exit(0);
+    }
+  }
+  else {
+    cout<<"c No -bveglobalgrow given, defaulting to disabled"<<endl;
+    cerr<<"No -bveglobalgrow given, defaulting to disabled"<<endl;
+  }
+  return BVEglobalGrow;
+}
+
 int parseVerb(map<string, string>& flags) {
 	int verb = 1;
 	if (flags.count("verb")) {
@@ -378,6 +448,9 @@ int main(int argc, char* argv[]){
 	bool labelMatching = parseLabelMatching(flags);
 	bool maxSat = parseProblemType(flags);
 	int skipTechnique = parseSkipTechnique(flags);
+  bool BVEsortMaxFirst = parseBVEsortMaxFirst(flags);
+  int BVElocalGrow = parseBVElocalGrow(flags);
+  int BVEglobalGrow = parseBVEglobalGrow(flags);
 	
 	ifstream instanceFile(file);
 	if (instanceFile.fail()) {
@@ -422,7 +495,10 @@ int main(int argc, char* argv[]){
 	pif.setBVEGateExtraction(BVEgate);
 	pif.setLabelMatching(labelMatching);
 	pif.setSkipTechnique(skipTechnique);
-	
+  pif.setBVEsortMaxFirst(BVEsortMaxFirst);
+  pif.setBVElocalGrowLimit(BVElocalGrow);
+  pif.setBVEglobalGrowLimit(BVEglobalGrow);
+
 	maxPreprocessor::Timer preprocessTimer;
 	preprocessTimer.start();
 	

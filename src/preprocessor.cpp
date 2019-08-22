@@ -28,6 +28,11 @@ Preprocessor::Preprocessor(const vector<vector<int> >& clauses, const vector<uin
 	originalClauses = pi.clauses.size();
 	BIGIt = 1;
 	BVEgate = true;
+
+  BVEsortMaxFirst = false;
+  BVElocalGrow = 0;
+  BVEglobalGrow = 0;
+
 	doneUnhiding = false;
 	randGen.seed(123);
 	skipTechnique = 0;

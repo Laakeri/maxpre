@@ -29,6 +29,10 @@ namespace maxPreprocessor {
 		useBVEGateExtraction = false;
 		useLabelMatching = false;
 		skipTechnique = 0;
+    BVEsortMaxFirst = false;
+    BVElocalGrow = 0;
+    BVEglobalGrow = 0;
+
 		if (inProcessMode) {
 			PPVarToSolverVar.resize(variables);
 			solverVarToPPVar.resize(variables);
@@ -45,6 +49,10 @@ namespace maxPreprocessor {
 		preprocessor.logLevel = logLevel;
 		preprocessor.printComments = false;
 		preprocessor.skipTechnique = skipTechnique;
+
+    preprocessor.BVEsortMaxFirst = BVEsortMaxFirst;
+    preprocessor.BVElocalGrow = BVElocalGrow;
+    preprocessor.BVEglobalGrow = BVEglobalGrow;
 		
 		preprocessor.preprocess(techniques, timeLimit, false, useBVEGateExtraction, !preprocessed, useLabelMatching);
 		preprocessed = true;
@@ -223,6 +231,16 @@ namespace maxPreprocessor {
 		skipTechnique = value;
 	}
 	
+  void PreprocessorInterface::setBVEsortMaxFirst(bool use) {
+    BVEsortMaxFirst = use;
+  }
+  void PreprocessorInterface::setBVElocalGrowLimit(int limit) {
+    BVElocalGrow = limit;
+  }
+  void PreprocessorInterface::setBVEglobalGrowLimit(int limit) {
+    BVEglobalGrow = limit;
+  }
+
 	int PreprocessorInterface::litToSolver(int lit) {
 		if (PPVarToSolverVar.size() < abs(lit)) PPVarToSolverVar.resize(abs(lit));
 		if (PPVarToSolverVar[abs(lit)-1] == 0) {

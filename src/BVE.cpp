@@ -348,6 +348,8 @@ vector<int> Preprocessor::tryBVEGE(int var) {
 // Dont give labels to this
 int Preprocessor::tryBVE2(int var) {
 	int sizeLimit = pi.litClauses[posLit(var)].size() + pi.litClauses[negLit(var)].size();
+
+  sizeLimit += min(BVElocalGrow, BVEglobalGrow);
 	
 	vector<int> isPosDef, isNegDef;
 	vector<int> defClauses;
@@ -455,6 +457,8 @@ int Preprocessor::tryBVE2(int var) {
 	
 	rLog.removeVariable(1);
 	rLog.removeClause((int)toRemove.size() - (int)newClauses.size());
+
+  BVEglobalGrow += (int)toRemove.size() - (int)newClauses.size();
 	
 	assert(pi.litClauses[posLit(var)].size() == 0 && pi.litClauses[negLit(var)].size() == 0);
 	return 1;
@@ -557,6 +561,12 @@ int Preprocessor::doBVE() {
 		};
 		sort(checkVar.begin(), checkVar.end(), cmp);
 	}
+  if (BVEsortMaxFirst) {
+    auto cmp = [&](int var1, int var2) {
+      return pi.litClauses[negLit(var1)].size() + pi.litClauses[posLit(var1)].size() > pi.litClauses[negLit(var2)].size() + pi.litClauses[posLit(var2)].size();
+    };
+    sort(checkVar.begin(), checkVar.end(), cmp);
+  }
 	bool skip = false;
 	if (skipTechnique > 0 && (int)checkVar.size() >= skipTechnique * 4) {
 		for (int tc = 0; tc < skipTechnique; tc++) {

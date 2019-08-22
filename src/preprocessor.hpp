@@ -75,6 +75,11 @@ public:
 	void doSE2();
 	
 	bool BVEgate;
+
+  bool BVEsortMaxFirst;
+  int BVElocalGrow;
+  int BVEglobalGrow;
+
 	void printC(int c) const;
 	std::pair<std::vector<int>, int> searchXor(int var) const;
 	std::pair<std::vector<int>, int> searchITE(int var) const;

@@ -16,6 +16,10 @@ private:
 	bool useBVEGateExtraction;
 	bool useLabelMatching;
 	int skipTechnique;
+  bool BVEsortMaxFirst;
+  int BVElocalGrow;
+  int BVEglobalGrow;
+
 	std::vector<int> solverVarToPPVar;
 	std::vector<int> PPVarToSolverVar;
 	int litToSolver(int lit);
@@ -77,7 +81,13 @@ public:
 	void setLabelMatching(bool use);
 	// Set value=0 to disable skiptechnique
 	void setSkipTechnique(int value);
-	
+
+  // Functions for controlling BVE for some experiments
+  void setBVEsortMaxFirst(bool use);
+  void setBVElocalGrowLimit(int limit);
+  // This limit is per one call of preprocess
+  void setBVEglobalGrowLimit(int limit);
+
 	
 	// Returns the current instance
 	void getInstance(std::vector<std::vector<int> >& retClauses, std::vector<uint64_t>& retWeights, std::vector<int>& retLabels);
